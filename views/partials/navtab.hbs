@@ -1,0 +1,15 @@
+<ul class='nav nav-tabs'>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const elem = document.getElementById('{{active}}')
+    elem.className = "active"
+  })
+  </script>
+  <li id="home"><a href='/'>Home</a></li>
+  <li id="clients"><a href='/oauth2/clients'>List OAuth2 Clients</a></li>
+  <li id="client"><a href='/oauth2/client'>Create OAuth2 Client</a></li>
+  <li id="login"><a href='/users/login'>Login</a></li>
+  <li id="register"><a href='/users/register'>Register</a></li>
+  <li id="logout"><a href='/users/logout'>Logout</a></li>
+  <li id="profile"><a href='/users/profile'>Profile</a></li>
+</ul>

@@ -1,0 +1,34 @@
+<html lang='zh-CN'>
+  <head>
+    {{>head}}
+
+    <link href="/css/create-client.css" rel="stylesheet"/>
+
+    <title>Create A OAuth2 Client</title>
+  </head>
+
+  <body>
+
+  {{> navtab active='client'}}
+
+    <div class='container'>
+
+      <form method='post'>
+        <div class='form-group'>
+          <label>Name</label>
+          <input class='form-control' name='name' type="text"/>
+        </div>
+        <div class='form-group'>
+          <label>Redirect Uri (split by `,` if multiple uris are providered)</label>
+          <input class='form-control' name='redirectUris' />
+        </div>
+        <div class='form-group'>
+          <label>Grant Type(s) (split by `,` if multiple uris are providered)</label>
+          <input class='form-control' name='grants' type="text" />
+        </div>
+        <input type='submit' class='btn btn-success' />
+      </form>
+
+    </div>
+  </body>
+</html>

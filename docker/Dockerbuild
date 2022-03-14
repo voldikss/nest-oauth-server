@@ -1,0 +1,34 @@
+#! /usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+if [[ -z $PROJECT_ROOT ]]; then
+    echo "env PROJECT_ROOT is not defined"
+    exit 1
+fi
+if [[ -z $IMAGE_BASE ]]; then
+    echo "env IMAGE_BASE is not defined"
+    exit 1
+fi
+if [[ -z $IMAGE_TAG ]]; then
+    echo "env IMAGE_TAG is not defined"
+    exit 1
+fi
+
+
+DEST=tmp
+rm -rf $DEST app.tar.gz && mkdir $DEST
+
+echo "copying"
+mkdir -p $DEST/config && \
+    cp $PROJECT_ROOT/config/default.js $PROJECT_ROOT/config/production.js $DEST/config/
+cp -R $PROJECT_ROOT/node_modules $PROJECT_ROOT/dist $DEST/
+cp -R $PROJECT_ROOT/public $PROJECT_ROOT/storage $PROJECT_ROOT/views $DEST/
+cp $PROJECT_ROOT/README.md $DEST/
+cp ./start.js $DEST
+(cd $DEST && tar -zcf ../app.tar.gz .)
+echo "done"
+
+docker build -t $IMAGE_BASE:$IMAGE_TAG -t $IMAGE_BASE:latest . && \
+    docker push $IMAGE_BASE:latest

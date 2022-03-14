@@ -1,0 +1,40 @@
+<html lang='zh-CN'>
+  <head>
+    {{>head}}
+
+    <title>Registered Clients</title>
+
+    <link href="/css/list-clients.css" rel="stylesheet"/>
+
+  </head>
+
+  <body>
+
+    {{> navtab active='clients'}}
+
+    <div class='container'>
+
+
+      {{#each clients}}
+        <div class='panel panel-info'>
+          <div class='panel-heading'>{{this.name}}</div>
+          <div class='panel-body'>
+          <code>
+            name: {{this.name}}
+            <br>
+            clientId: {{this.clientId}}
+            <br>
+            clientSecret: {{this.clientSecret}}
+            <br>
+            redirectUris: {{this.redirectUris}}
+            <br>
+            grants: {{this.grants}}
+          </code>
+          </div>
+          </div>
+        </div>
+      {{/each}}
+
+    </div>
+  </body>
+</html>

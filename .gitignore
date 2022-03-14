@@ -1,6 +1,9 @@
 # compiled output
 /dist
 /node_modules
+/storage/db
+/docker/app.tar.gz
+/docker/tmp
 
 # Logs
 logs

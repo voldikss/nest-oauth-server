@@ -1,0 +1,17 @@
+[start]
+command=yarn start:dev
+cwd=<root>
+output=terminal
+# silent=1
+focus=1
+notify=echo
+save=2
+
+[test-docker-build]
+command=IMAGE_TAG=alan IMAGE_BASE=gitlab.alan.cn:5000/oauth-server ./docker/cmd
+cwd=<root>
+output=terminal
+# silent=1
+focus=1
+notify=echo
+save=2

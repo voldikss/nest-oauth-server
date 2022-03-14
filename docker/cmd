@@ -1,0 +1,21 @@
+#! /usr/bin/env node
+
+const cp = require('child_process')
+const path = require('path')
+
+process.on('uncaughtException', err => {
+  process.stdout.write('\033[31m')
+  console.error(err)
+  process.stdout.write('\033[0m')
+  process.exit(1)
+})
+
+process.env.PROJECT_ROOT = path.resolve(__dirname, '..')
+
+console.time(`# docker build`)
+cp.execSync(`${__dirname}/Dockerbuild`, {
+  cwd: `${__dirname}`,
+  stdio: 'inherit',
+  env: process.env,
+})
+console.timeEnd(`# docker build`)

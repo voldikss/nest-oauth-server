@@ -1,0 +1,26 @@
+<html lang='zh-CN'>
+  <head>
+    <title>Profile</title>
+
+    {{>head}}
+
+    <!-- Custom styles for this template -->
+    <link href='/css/login.css' rel='stylesheet' />
+  </head>
+
+  <body>
+
+    {{> navtab active='profile'}}
+
+    <div class='container'>
+
+        <div class="jumbotron">
+            <h1>
+                {{user.username}}
+            </h1>
+            <p>createdAt: {{user.createdAt}}</p>
+        </div>
+
+    </div>
+  </body>
+</html>
