@@ -3,6 +3,7 @@ import {
   ExceptionFilter,
   ForbiddenException,
   HttpException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common'
 
@@ -21,16 +22,24 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     ) {
       const redirectUrl = new URLSearchParams()
       redirectUrl.append('redirect', req.url)
-      res.redirect(`/users/login?${redirectUrl}`)
+      return res.redirect(`/users/login?${redirectUrl}`)
+    } else if (
+      exception instanceof NotFoundException &&
+      req.url.endsWith('/null')
+    ) {
+      return res.json({
+        message: exception.message,
+        statusCode: exception.getStatus(),
+      })
     } else if (exception instanceof HttpException) {
       console.error(exception)
-      res.json({
+      return res.json({
         message: exception.message,
         statusCode: exception.getStatus(),
       })
     } else {
       console.error(exception)
-      res.json({
+      return res.json({
         message: exception.message,
         statusCode: 500,
       })
