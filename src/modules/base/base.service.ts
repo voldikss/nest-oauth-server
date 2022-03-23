@@ -1,24 +1,27 @@
 import { DeepPartial, FindConditions, Repository } from 'typeorm'
 
 import { BaseEntity, BasePopulateSpec } from './base.entity'
-import { StringKeyOf } from './types'
+import { Nullable, PopulatedEntityType, StringKeyOf } from './types'
 
 export abstract class BaseService<
   T extends BaseEntity = BaseEntity,
-  POPULATE_SPEC extends BasePopulateSpec = BasePopulateSpec,
+  PopulateSpec extends BasePopulateSpec = BasePopulateSpec,
 > {
   protected abstract readonly repository: Repository<T>
 
-  async searchOne(
+  async searchOne<
+    Column extends StringKeyOf<T>,
+    Population extends StringKeyOf<PopulateSpec>,
+  >(
     conditions: FindConditions<T>,
-    columns?: Array<StringKeyOf<T>>,
-    populations?: Array<StringKeyOf<POPULATE_SPEC>>,
-  ) {
-    return await this.repository.findOne({
+    columns?: Column[],
+    populations?: Population[],
+  ): Promise<Nullable<PopulatedEntityType<T, Column, PopulateSpec, Population>>> {
+    return (await this.repository.findOne({
       where: conditions,
       select: columns,
       relations: populations,
-    })
+    })) as any
   }
 
   async createOne(input: DeepPartial<Omit<T, 'id'>>) {
@@ -38,16 +41,21 @@ export abstract class BaseService<
     return await this.repository.save({ ...conditions, ...input })
   }
 
-  async searchMany(
+  async searchMany<
+    Column extends StringKeyOf<T>,
+    Population extends StringKeyOf<PopulateSpec>,
+  >(
     conditions: FindConditions<T>,
     columns?: Array<StringKeyOf<T>>,
-    populations?: Array<StringKeyOf<POPULATE_SPEC>>,
-  ) {
-    return await this.repository.find({
+    populations?: Array<StringKeyOf<PopulateSpec>>,
+  ): Promise<
+    Nullable<PopulatedEntityType<T, Column, PopulateSpec, Population>>[]
+  > {
+    return (await this.repository.find({
       where: conditions,
       select: columns,
       relations: populations,
-    })
+    })) as any
   }
 
   async createMany(inputs: Array<DeepPartial<Omit<T, 'id'>>>) {
@@ -74,15 +82,20 @@ export abstract class BaseService<
     )
   }
 
-  async searchByIds(
+  async searchByIds<
+    Column extends StringKeyOf<T>,
+    Population extends StringKeyOf<PopulateSpec>,
+  >(
     ids: string[],
     columns?: Array<StringKeyOf<T>>,
-    populations?: Array<StringKeyOf<POPULATE_SPEC>>,
-  ) {
-    return await this.repository.findByIds(ids, {
+    populations?: Array<StringKeyOf<PopulateSpec>>,
+  ): Promise<
+    Nullable<PopulatedEntityType<T, Column, PopulateSpec, Population>>[]
+  > {
+    return (await this.repository.findByIds(ids, {
       select: columns,
       relations: populations,
-    })
+    })) as any
   }
 
   async updateByIds(

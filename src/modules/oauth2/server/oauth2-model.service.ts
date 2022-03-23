@@ -4,6 +4,7 @@ import OAuth2Server from 'oauth2-server'
 
 import { AuthHelper } from '../../auth/auth.helper'
 import { User } from '../../user/user.entity'
+import { UserService } from '../../user/user.service'
 import { OAuth2AccessToken } from '../access-token/oauth2-access-token.entity'
 import { OAuth2AccessTokenService } from '../access-token/oauth2-access-token.service'
 import { OAuth2AuthorizationCode } from '../authorization-code/oauth2-authorization-code.entity'
@@ -13,11 +14,18 @@ import { OAuth2ClientService } from '../client/oauth2-client.service'
 import { ensureArray } from '../utils'
 
 @Injectable()
-export class OAuth2ModelService implements OAuth2Server.AuthorizationCodeModel {
+export class OAuth2ModelService
+  implements
+    OAuth2Server.AuthorizationCodeModel,
+    OAuth2Server.RefreshTokenModel,
+    OAuth2Server.PasswordModel,
+    OAuth2Server.ClientCredentialsModel
+{
   constructor(
     protected readonly oAuth2AuthorizationCodeService: OAuth2AuthorizationCodeService,
     protected readonly oAuth2AccessTokenService: OAuth2AccessTokenService,
     protected readonly oAuth2ClientService: OAuth2ClientService,
+    protected readonly userService: UserService,
     protected readonly authHelper: AuthHelper,
   ) {}
 
@@ -121,5 +129,48 @@ export class OAuth2ModelService implements OAuth2Server.AuthorizationCodeModel {
   async verifyScope(token: OAuth2AccessToken, scope: string[]): Promise<boolean> {
     if (!token.scope) return true
     return token.scope.every((x) => ensureArray(scope).includes(x))
+  }
+
+  async getRefreshToken(
+    refreshToken: string,
+  ): Promise<OAuth2Server.RefreshToken | OAuth2Server.Falsey> {
+    const token = await this.oAuth2AccessTokenService.searchOne({
+      refreshToken,
+    })
+    if (!token?.refreshToken) return
+    return {
+      refreshToken: token?.refreshToken,
+      scope: token?.scope,
+      refreshTokenExpiresAt: token?.accessTokenExpiresAt,
+      user: token.user,
+      client: token.client,
+    }
+  }
+
+  async revokeToken(
+    token: OAuth2Server.RefreshToken | OAuth2Server.Token,
+  ): Promise<boolean> {
+    const result = await this.oAuth2AccessTokenService.delete({
+      accessToken: token.accessToken,
+    })
+    return !!result.affected
+  }
+
+  async getUser(
+    username: string,
+    password: string,
+  ): Promise<OAuth2Server.User | OAuth2Server.Falsey> {
+    return await this.userService.login({ username, password })
+  }
+
+  async getUserFromClient({
+    id: clientId,
+  }: OAuth2Server.Client): Promise<OAuth2Server.User | OAuth2Server.Falsey> {
+    const client = await this.oAuth2ClientService.searchOne(
+      { clientId: clientId },
+      undefined,
+      ['user'],
+    )
+    return client?.user
   }
 }
