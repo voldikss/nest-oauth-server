@@ -8,7 +8,7 @@ notify=echo
 save=2
 
 [test-docker-build]
-command=IMAGE_TAG=alan IMAGE_BASE=gitlab.alan.cn:5000/oauth-server ./docker/cmd
+command=IMAGE_TAG=2022 IMAGE_BASE=gitlab.test.cn:5000/alan/oauth-server ./docker/cmd
 cwd=<root>
 output=terminal
 # silent=1
