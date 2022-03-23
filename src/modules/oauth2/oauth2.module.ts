@@ -12,7 +12,7 @@ import { OAuth2Client } from './client/oauth2-client.entity'
 import { OAuth2ClientService } from './client/oauth2-client.service'
 import { OAuth2Controller } from './oauth2.controller'
 import { OAuth2ModelService } from './server/oauth2-model.service'
-import { OAuth2ServerFactory } from './server/oauth2-server.service'
+import { OAuth2ServerService } from './server/oauth2-server.service'
 
 @Module({
   imports: [
@@ -29,7 +29,7 @@ import { OAuth2ServerFactory } from './server/oauth2-server.service'
     OAuth2AuthorizationCodeService,
     OAuth2ClientService,
     OAuth2ModelService,
-    OAuth2ServerFactory,
+    OAuth2ServerService,
   ],
   controllers: [OAuth2Controller],
 })

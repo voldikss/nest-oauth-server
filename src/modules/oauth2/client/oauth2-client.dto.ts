@@ -23,10 +23,6 @@ export class OAuth2ClientCreateDTO {
   @Transform(transformToArrayOfStringsFactory({ required: true }))
   grants!: string[]
 
-  @Transform(
-    transformToArrayOfStringsFactory({
-      required: false,
-    }),
-  )
-  scope?: string[]
+  @Transform(transformToArrayOfStringsFactory({ required: true }))
+  scope!: string[]
 }

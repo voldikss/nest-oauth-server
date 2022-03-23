@@ -19,8 +19,8 @@ export class OAuth2AccessToken extends BaseEntity implements OAuth2Server.Token 
   @Column()
   refreshTokenExpiresAt?: Date
 
-  @Column({ type: 'simple-array', nullable: true, array: true })
-  scope?: string[]
+  @Column({ type: 'simple-array', array: true })
+  scope!: string[]
 
   @ManyToOne(() => OAuth2Client)
   client!: OAuth2Client

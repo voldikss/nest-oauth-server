@@ -69,17 +69,15 @@ export class OAuth2ModelService
   async validateScope(
     _user: User,
     client: OAuth2Client,
-    scope: string[],
-  ): Promise<false | 0 | string[]> {
-    // NOTE: [] will pass scope validation during node-oauth2-server handle stage
-    if (!client.scope) return []
-    return scope.every((x) => client.scope?.includes(x)) && scope
+    scope: string | string[],
+  ): Promise<false | 0 | string | string[]> {
+    return ensureArray(scope).every((x) => client.scope.includes(x)) && scope
   }
 
   async generateAccessToken(
     _client: OAuth2Client,
     user: User,
-    _scope: string[],
+    _scope: string | string[],
   ): Promise<string> {
     return this.authHelper.createToken(user.id)
   }
@@ -126,7 +124,10 @@ export class OAuth2ModelService
     )
   }
 
-  async verifyScope(token: OAuth2AccessToken, scope: string[]): Promise<boolean> {
+  async verifyScope(
+    token: OAuth2AccessToken,
+    scope: string | string[],
+  ): Promise<boolean> {
     if (!token.scope) return true
     return token.scope.every((x) => ensureArray(scope).includes(x))
   }

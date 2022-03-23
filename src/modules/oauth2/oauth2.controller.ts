@@ -19,16 +19,12 @@ import { User } from '../user/user.entity'
 
 import { OAuth2ClientCreateDTO } from './client/oauth2-client.dto'
 import { OAuth2ClientService } from './client/oauth2-client.service'
-import {
-  OAuth2ServerProviderToken,
-  OAuth2ServerService,
-} from './server/oauth2-server.service'
+import { OAuth2ServerService } from './server/oauth2-server.service'
 import { generateRandomToken } from './utils'
 
 @Controller('oauth2')
 export class OAuth2Controller {
   constructor(
-    @Inject(OAuth2ServerProviderToken)
     protected readonly oAuth2ServerService: OAuth2ServerService,
     protected readonly oAuth2ClientService: OAuth2ClientService,
   ) {}
