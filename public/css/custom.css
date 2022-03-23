@@ -1,4 +1,18 @@
-@import 'global.css';
+.container {
+  margin-top: 24px;
+}
+
+.nav .nav-tabs {
+  background-color: lightblue;
+}
+
+body {
+  padding: 8px;
+}
+
+.panel {
+  margin-bottom: 24px;
+}
 
 .form-signin {
   max-width: 330px;
