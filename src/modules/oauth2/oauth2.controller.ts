@@ -81,6 +81,7 @@ export class OAuth2Controller {
       clientSecret: await generateRandomToken(),
       grants: input.grants,
       redirectUris: input.redirectUris,
+      scope: input.scope,
     })
   }
 }

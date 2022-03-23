@@ -24,6 +24,7 @@ export class InitSeedData1647243654689 implements MigrationInterface {
         clientSecret,
         redirectUris,
         grants,
+        scope,
         userId
       ) VALUES (
         'builtin',
@@ -32,6 +33,7 @@ export class InitSeedData1647243654689 implements MigrationInterface {
         'bdff37b394ebd751f081aab846db95b7ccbf1fd4',
         'http://localhost:9000/oauth/builtin/callback',
         'authorization_code',
+        'read_user,read_client,write_client,profile',
         'builtin'
       )`,
     )

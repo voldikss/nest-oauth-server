@@ -24,6 +24,7 @@ export class CreateTables1647242218420 implements MigrationInterface {
         "clientSecret" varchar NOT NULL,
         "redirectUris" text array NOT NULL,
         "grants" varchar CHECK( "grants" IN ('authorization_code','client_credentials','refresh_token','password') ) NOT NULL,
+        "scope" text array,
         "userId" varchar,
         CONSTRAINT "FK_53180a1081e9d1472cf44737538" FOREIGN KEY ("userId") REFERENCES "users" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION
       )`,

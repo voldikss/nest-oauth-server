@@ -19,8 +19,8 @@ export class OAuth2AuthorizationCode
   @Column()
   redirectUri!: string
 
-  @Column({ type: 'simple-array', array: true })
-  scope!: string[]
+  @Column({ type: 'simple-array', array: true, nullable: true })
+  scope?: string[]
 
   @ManyToOne(() => OAuth2Client)
   client!: OAuth2Client

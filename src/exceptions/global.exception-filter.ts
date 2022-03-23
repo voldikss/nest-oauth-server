@@ -32,10 +32,12 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         statusCode: exception.getStatus(),
       })
     } else if (exception instanceof HttpException) {
+      const extra = exception.getResponse()
       console.error(exception)
       return res.json({
         message: exception.message,
         statusCode: exception.getStatus(),
+        ...(typeof extra === 'string' ? { extra } : extra),
       })
     } else {
       console.error(exception)

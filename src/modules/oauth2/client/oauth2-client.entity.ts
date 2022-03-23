@@ -30,6 +30,9 @@ export class OAuth2Client extends BaseEntity implements OAuth2Server.Client {
   })
   grants!: string[]
 
+  @Column({ type: 'simple-array', nullable: true, array: true })
+  scope?: string[]
+
   @ManyToOne(() => User, (user: User) => user.clients)
   user!: User
 }
